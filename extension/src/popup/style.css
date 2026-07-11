@@ -94,7 +94,7 @@ h1 {
 }
 
 .switch input:checked ~ .switch-track {
-  background: #cc0000;
+  background: #111111;
 }
 
 .switch input:checked ~ .switch-track .switch-thumb {
