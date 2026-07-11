@@ -6,19 +6,16 @@ import { createCssToggle } from "../cssToggle";
 // (ytd-watch-next-secondary-results-renderer > #related). Hiding the column
 // wrapper removes both in one shot instead of targeting each separately.
 //
-// #primary ships with an asymmetric gutter (margin: 0 0 0 16px, padding:
-// 12px 16px 0 0) that exists to leave room for #secondary on its right.
-// With #secondary gone that lopsided margin/padding is what pushes the
-// centered layout a few pixels off - mirroring both to 16px on each side
-// (measured via devtools) straightens it back out.
+// #primary's own margin (0 0 0 16px) is what actually centers it once
+// #secondary is gone - confirmed by measuring the real layout. Pinning it
+// explicitly guards against YouTube changing that default out from under us.
 const CSS = `
 ytd-watch-flexy #secondary {
   display: none !important;
 }
 
 ytd-watch-flexy #primary {
-  margin: 0 16px !important;
-  padding: 12px 16px 0 16px !important;
+  margin: 0px 0px 0px 16px !important;
 }
 `;
 
