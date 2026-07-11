@@ -1,11 +1,11 @@
-name: Deploy site
+name: "[PROD] Deploy site"
 
 on:
   push:
     branches: [main]
     paths:
       - "site/**"
-      - ".github/workflows/deploy-site.yml"
+      - ".github/workflows/prod-deploy.yml"
   workflow_dispatch:
 
 permissions:

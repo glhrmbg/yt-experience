@@ -1,5 +1,6 @@
 import type { Feature } from "../types";
 import { HIDE_SHORTS_CSS } from "./selectors";
+import { hideShortsChips, startChipObserver, stopChipObserver, unhideShortsChips } from "./chip";
 
 const STYLE_ID = "ytx-hide-shorts";
 
@@ -21,9 +22,13 @@ export const hideShorts: Feature = {
   defaultEnabled: true,
   apply() {
     getOrCreateStyleTag().disabled = false;
+    hideShortsChips();
+    startChipObserver();
   },
   undo() {
     const style = document.getElementById(STYLE_ID) as HTMLStyleElement | null;
     if (style) style.disabled = true;
+    stopChipObserver();
+    unhideShortsChips();
   },
 };
