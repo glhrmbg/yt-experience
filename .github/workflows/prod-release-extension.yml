@@ -1,0 +1,53 @@
+name: "[PROD] Release extension"
+
+# Packages a fresh build of the extension and publishes it as a GitHub
+# Release with a downloadable zip, every time a change to extension/** lands
+# on main. No store account/credentials involved - users download the zip,
+# unzip it, and load it unpacked (Developer mode -> Load unpacked).
+on:
+  push:
+    branches: [main]
+    paths:
+      - "extension/**"
+      - ".github/workflows/prod-release-extension.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension
+        run: npm run build -w extension
+
+      - name: Zip extension build
+        run: |
+          cd extension/dist
+          zip -r ../../yt-experience-extension.zip .
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(node -p "require('./extension/package.json').version")
+          TAG="extension-build-${{ github.run_number }}"
+          gh release create "$TAG" \
+            yt-experience-extension.zip \
+            --title "Extension build #${{ github.run_number }} (v$VERSION)" \
+            --notes "Automated build from commit $(git rev-parse --short HEAD).
+
+Install: download the zip below, unzip it, then in Brave/Chrome go to \`brave://extensions\` (or \`chrome://extensions\`), enable Developer mode, and click \"Load unpacked\" on the unzipped folder."
