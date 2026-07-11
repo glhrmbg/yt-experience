@@ -10,6 +10,10 @@ name: "[PROD] Release extension"
 # any PR that touches extension/** without bumping that version, so this
 # workflow can trust it's always release-worthy - no auto-increment logic
 # needed here.
+#
+# Triggering on changes to this file too means editing the release notes
+# template (no version bump) re-runs it against a tag that already has a
+# release - create-or-update instead of a hard create so that doesn't fail.
 on:
   push:
     branches: [main]
@@ -67,7 +71,12 @@ jobs:
             "4. Click **Load unpacked** and select the unzipped folder." \
             > release-notes.md
 
-          gh release create "$TAG" \
-            "$ZIP_NAME" \
-            --title "$TAG" \
-            --notes-file release-notes.md
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release edit "$TAG" --title "$TAG" --notes-file release-notes.md
+            gh release upload "$TAG" "$ZIP_NAME" --clobber
+          else
+            gh release create "$TAG" \
+              "$ZIP_NAME" \
+              --title "$TAG" \
+              --notes-file release-notes.md
+          fi
