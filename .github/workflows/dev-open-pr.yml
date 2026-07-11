@@ -1,9 +1,10 @@
 name: "[DEV] Validate & open PR to main"
 
-# Fires after a feature PR lands on develop (push to develop). Re-validates
-# the merged state and auto-opens (or leaves alone, if one is already open)
-# the release PR to main. dev-validate.yml is the separate required check
-# that actually gates that PR's merge.
+# Fires after a feature PR lands on develop (push to develop, e.g. a merge).
+# Re-validates the merged state and, only if that passes, auto-opens (or
+# leaves alone) the release PR to main. The "build" job is also what
+# satisfies main's required status check for that PR (see feat-open-pr.yml
+# for why this works without a separate pull_request-triggered workflow).
 on:
   push:
     branches: [develop]
@@ -13,7 +14,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  validate:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,7 +36,7 @@ jobs:
         run: npm run build -w extension
 
   open-pr:
-    needs: validate
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
