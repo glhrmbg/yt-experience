@@ -17,7 +17,7 @@ export const hideWatchSidebar: Feature = {
   id: "hide-watch-sidebar",
   group: "Watch Page",
   name: "Hide recommendations sidebar",
-  description: "Hides the up-next carousel and related videos list next to the player.",
+  description: "Hides the up-next carousel and related videos list, and centers the player in the freed-up space.",
   defaultEnabled: false,
   apply: toggle.apply,
   undo: toggle.undo,
