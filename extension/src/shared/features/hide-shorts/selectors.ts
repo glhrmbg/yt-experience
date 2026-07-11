@@ -2,8 +2,11 @@
 // Preference order: match on `href`/custom-element tags (language-independent) over
 // `title`/`aria-label`/text content (localized) wherever YouTube's markup allows it.
 export const HIDE_SHORTS_CSS = `
-/* Expanded sidebar guide entry */
-ytd-guide-entry-renderer:has(a[href="/shorts/"]) {
+/* Expanded sidebar guide entry. Unlike the mini/collapsed guide, this entry's
+   <a id="endpoint"> has no href at all (verified against live DOM) - only
+   title="Shorts", so we fall back to that. Also matching href defensively in
+   case YouTube starts populating it. */
+ytd-guide-entry-renderer:has(a[href="/shorts/"], a[title="Shorts"]) {
   display: none !important;
 }
 
