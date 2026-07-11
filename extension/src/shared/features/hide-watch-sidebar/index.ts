@@ -13,8 +13,18 @@ import { createCssToggle } from "../cssToggle";
 // YouTube's own player adds only for actual live broadcasts - so: no live
 // player -> hide the whole column like before; live -> keep the column,
 // but hide everything in it except the chat.
+//
+// YouTube's own "close chat" button adds a `hide-chat-frame` attribute to
+// <ytd-live-chat-frame id="chat">. When that happens there's nothing left
+// worth keeping the column around for, so collapse it same as a non-live
+// video - and since it's plain :has()/attribute matching, it reacts live to
+// the attribute being added or removed with no JS needed.
 const CSS = `
 ytd-watch-flexy:not(:has(.ytp-live)) #secondary {
+  display: none !important;
+}
+
+ytd-watch-flexy:has(.ytp-live) #secondary:has(ytd-live-chat-frame[hide-chat-frame]) {
   display: none !important;
 }
 
