@@ -150,3 +150,6 @@ vite.config.ts.timestamp-*
 
 # Packaged extension release artifacts
 extension/*.zip
+
+# Local scratch notes (DOM snippets, etc.) - not for the repo
+yt.md

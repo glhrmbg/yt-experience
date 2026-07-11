@@ -1,28 +1,59 @@
-// Best-effort selectors for YouTube's Shorts UI. YouTube ships frequent,
-// unannounced DOM/class changes, so these should be re-verified against the
-// live site periodically rather than trusted as permanently correct.
+// Selectors verified against live YouTube DOM (see elemento-youtube.md, not committed).
+// Preference order: match on `href`/custom-element tags (language-independent) over
+// `title`/`aria-label`/text content (localized) wherever YouTube's markup allows it.
 export const HIDE_SHORTS_CSS = `
-/* Sidebar (expanded + mini/collapsed guide) */
-ytd-guide-entry-renderer:has(a[title="Shorts"]),
-ytd-mini-guide-entry-renderer[aria-label="Shorts"] {
+/* Expanded sidebar guide entry */
+ytd-guide-entry-renderer:has(a[href="/shorts/"]) {
   display: none !important;
 }
 
-/* Homepage / feed Shorts shelves */
-ytd-rich-shelf-renderer[is-shorts],
-ytd-reel-shelf-renderer {
+/* Collapsed/mini guide entry (incl. the hamburger drawer at narrow viewports).
+   Note: aria-label/title/href live on the inner <a id="endpoint">, not on the
+   ytd-mini-guide-entry-renderer host itself - matching the host's attributes
+   directly (as an earlier version of this file did) silently never matches. */
+ytd-mini-guide-entry-renderer:has(a#endpoint[href="/shorts/"]) {
   display: none !important;
 }
 
-/* Channel page "Shorts" tab */
+/* Shorts video "lockup" cards - the current renderer used for Shorts thumbnails
+   in search results, home feed grids/shelves, and recommendations. Hiding the
+   grid cell wrapper (when present) avoids leaving an empty gap; hiding the
+   lockup itself is a fallback for contexts where it isn't grid-wrapped. */
+div.ytGridShelfViewModelGridShelfItem:has(ytm-shorts-lockup-view-model-v2),
+ytm-shorts-lockup-view-model-v2,
+ytm-shorts-lockup-view-model {
+  display: none !important;
+}
+
+/* Whole shelf when every item in it is a Shorts lockup - covers shelves titled
+   "Shorts" as well as topic-named shelves (e.g. a category row) that turn out
+   to be entirely Shorts content. */
+grid-shelf-view-model:has(ytm-shorts-lockup-view-model-v2) {
+  display: none !important;
+}
+
+/* Older shelf/grid renderers - kept for YouTube's A/B-tested legacy DOM variants. */
+ytd-reel-shelf-renderer,
+ytd-rich-shelf-renderer[is-shorts] {
+  display: none !important;
+}
+
+/* Channel page "Shorts" tab (href-based; unverified against live DOM, best effort). */
 tp-yt-paper-tab:has(a[href*="/shorts"]),
-yt-tab-shape[tab-title="Shorts"] {
+yt-tab-shape:has(a[href*="/shorts"]) {
   display: none !important;
 }
 
-/* Individual Shorts entries in search results / recommendations */
+/* Individual Shorts entries mixed into regular video result/recommendation lists. */
 ytd-video-renderer:has(a[href^="/shorts"]),
 ytd-grid-video-renderer:has(a[href^="/shorts"]) {
+  display: none !important;
+}
+
+/* The "Shorts" filter chip is hidden via JS (chip.ts) since its label is plain
+   localized text with no language-independent attribute to match on - this
+   class is toggled by that logic. */
+yt-chip-cloud-chip-renderer[data-ytx-hidden] {
   display: none !important;
 }
 `;
