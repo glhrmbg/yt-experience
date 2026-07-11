@@ -1,5 +1,6 @@
 import type { Feature } from "../types";
 import { createCssToggle } from "../cssToggle";
+import { startChatCollapseNudge, stopChatCollapseNudge } from "./chatCollapseNudge";
 
 // #secondary (inside ytd-watch-flexy) holds the whole right-hand column of
 // the watch page: the autoplay/up-next card, the related-videos list, and -
@@ -42,6 +43,12 @@ export const hideWatchSidebar: Feature = {
   description:
     "Hides the up-next carousel and related videos list next to the player. Live chat, if present, stays visible.",
   defaultEnabled: true,
-  apply: toggle.apply,
-  undo: toggle.undo,
+  apply() {
+    toggle.apply();
+    startChatCollapseNudge();
+  },
+  undo() {
+    toggle.undo();
+    stopChatCollapseNudge();
+  },
 };
