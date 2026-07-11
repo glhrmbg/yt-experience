@@ -45,9 +45,9 @@ jobs:
         run: |
           VERSION=$(node -p "require('./extension/package.json').version")
           TAG="extension-build-${{ github.run_number }}"
+          NOTES="Automated build from commit $(git rev-parse --short HEAD)."
+          NOTES="$NOTES"$'\n\n'"Install: download the zip below, unzip it, then in Brave/Chrome go to brave://extensions (or chrome://extensions), enable Developer mode, and click Load unpacked on the unzipped folder."
           gh release create "$TAG" \
             yt-experience-extension.zip \
             --title "Extension build #${{ github.run_number }} (v$VERSION)" \
-            --notes "Automated build from commit $(git rev-parse --short HEAD).
-
-Install: download the zip below, unzip it, then in Brave/Chrome go to \`brave://extensions\` (or \`chrome://extensions\`), enable Developer mode, and click \"Load unpacked\" on the unzipped folder."
+            --notes "$NOTES"
