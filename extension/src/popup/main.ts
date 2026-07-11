@@ -14,19 +14,29 @@ async function render() {
     const item = document.createElement("li");
     item.className = "feature-item";
 
+    const text = document.createElement("div");
+    text.className = "feature-text";
+    text.innerHTML = `<div class="name">${feature.name}</div><div class="description">${feature.description}</div>`;
+
+    const switchLabel = document.createElement("label");
+    switchLabel.className = "switch";
+
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.id = `feature-${feature.id}`;
     checkbox.checked = enabled;
+    checkbox.setAttribute("aria-label", feature.name);
     checkbox.addEventListener("change", () => {
       void setFeatureEnabled(feature.id, checkbox.checked);
     });
 
-    const text = document.createElement("div");
-    text.className = "feature-text";
-    text.innerHTML = `<label class="name" for="feature-${feature.id}">${feature.name}</label><div class="description">${feature.description}</div>`;
+    const track = document.createElement("span");
+    track.className = "switch-track";
+    const thumb = document.createElement("span");
+    thumb.className = "switch-thumb";
+    track.append(thumb);
 
-    item.append(checkbox, text);
+    switchLabel.append(checkbox, track);
+    item.append(text, switchLabel);
     list.append(item);
   }
 }

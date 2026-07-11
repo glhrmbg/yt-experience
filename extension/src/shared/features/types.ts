@@ -1,4 +1,8 @@
-export type FeatureId = "hide-shorts";
+export type FeatureId =
+  | "hide-shorts-sidebar"
+  | "hide-shorts-feed"
+  | "hide-shorts-channel"
+  | "hide-shorts-chip";
 
 export interface Feature {
   id: FeatureId;
