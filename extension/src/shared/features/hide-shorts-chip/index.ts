@@ -12,6 +12,7 @@ const cssToggle = createCssToggle("ytx-hide-shorts-chip", CSS);
 
 export const hideShortsChip: Feature = {
   id: "hide-shorts-chip",
+  group: "Hide Shorts",
   name: "Filter chip",
   description: 'Hides the "Shorts" filter chip shown above search/feed results.',
   defaultEnabled: true,

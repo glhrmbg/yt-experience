@@ -11,19 +11,23 @@ h1 {
   margin: 0 0 8px;
 }
 
+#feature-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .group-title {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: #909090;
-  margin: 0 0 4px;
+  margin: 14px 0 4px;
 }
 
-#feature-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.group-title:first-child {
+  margin-top: 0;
 }
 
 .feature-item {
@@ -35,7 +39,7 @@ h1 {
   border-top: 1px solid #eee;
 }
 
-.feature-item:first-child {
+.group-title + .feature-item {
   border-top: none;
 }
 

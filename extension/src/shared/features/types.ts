@@ -2,10 +2,12 @@ export type FeatureId =
   | "hide-shorts-sidebar"
   | "hide-shorts-feed"
   | "hide-shorts-channel"
-  | "hide-shorts-chip";
+  | "hide-shorts-chip"
+  | "hide-watch-sidebar";
 
 export interface Feature {
   id: FeatureId;
+  group: string;
   name: string;
   description: string;
   defaultEnabled: boolean;
