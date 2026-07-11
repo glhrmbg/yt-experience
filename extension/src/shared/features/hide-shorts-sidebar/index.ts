@@ -19,6 +19,7 @@ const toggle = createCssToggle("ytx-hide-shorts-sidebar", CSS);
 
 export const hideShortsSidebar: Feature = {
   id: "hide-shorts-sidebar",
+  group: "Hide Shorts",
   name: "Sidebar navigation",
   description: "Hides the Shorts entry in the sidebar, expanded or collapsed.",
   defaultEnabled: true,

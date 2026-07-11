@@ -16,6 +16,7 @@ const toggle = createCssToggle("ytx-hide-shorts-channel", CSS);
 
 export const hideShortsChannel: Feature = {
   id: "hide-shorts-channel",
+  group: "Hide Shorts",
   name: "Channel tabs",
   description: "Hides the Shorts tab on channel pages.",
   defaultEnabled: true,

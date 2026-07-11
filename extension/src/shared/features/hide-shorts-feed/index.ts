@@ -32,6 +32,7 @@ const toggle = createCssToggle("ytx-hide-shorts-feed", CSS);
 
 export const hideShortsFeed: Feature = {
   id: "hide-shorts-feed",
+  group: "Hide Shorts",
   name: "Search results & feed grids",
   description: "Hides Shorts shelves and cards in search results and topic rows.",
   defaultEnabled: true,
