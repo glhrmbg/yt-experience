@@ -1,0 +1,86 @@
+---
+interface FeatureItem {
+  name: string;
+  description: string;
+  status: "available" | "planned";
+}
+
+const features: FeatureItem[] = [
+  {
+    name: "Hide Shorts",
+    description: "Removes Shorts from the sidebar, homepage, search results, and channel pages.",
+    status: "available",
+  },
+  {
+    name: "Watch page layout tweaks",
+    description: "Customize the layout of the video watch page.",
+    status: "planned",
+  },
+];
+---
+
+<ul class="feature-list">
+  {
+    features.map((feature) => (
+      <li class="feature">
+        <div class="feature-header">
+          <span class="feature-name">{feature.name}</span>
+          <span class={`badge badge-${feature.status}`}>
+            {feature.status === "available" ? "Available" : "Planned"}
+          </span>
+        </div>
+        <p class="feature-description">{feature.description}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .feature-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .feature {
+    border: 1px solid color-mix(in srgb, var(--fg) 12%, transparent);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+
+  .feature-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .feature-name {
+    font-weight: 600;
+  }
+
+  .feature-description {
+    margin: 0.4rem 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .badge-available {
+    background: color-mix(in srgb, #2ea043 20%, transparent);
+    color: #2ea043;
+  }
+
+  .badge-planned {
+    background: color-mix(in srgb, var(--muted) 20%, transparent);
+    color: var(--muted);
+  }
+</style>

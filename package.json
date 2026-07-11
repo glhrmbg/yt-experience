@@ -1,0 +1,16 @@
+{
+  "name": "yt-experience",
+  "private": true,
+  "workspaces": [
+    "extension",
+    "site"
+  ],
+  "scripts": {
+    "dev:extension": "npm run dev -w extension",
+    "dev:site": "npm run dev -w site",
+    "build": "npm run build -w extension && npm run build -w site",
+    "build:extension": "npm run build -w extension",
+    "build:site": "npm run build -w site",
+    "typecheck": "npm run typecheck -w extension"
+  }
+}

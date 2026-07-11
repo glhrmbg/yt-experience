@@ -141,3 +141,12 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# macOS
+.DS_Store
+
+# Astro
+.astro/
+
+# Packaged extension release artifacts
+extension/*.zip

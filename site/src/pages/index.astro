@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FeatureList from "../components/FeatureList.astro";
+import InstallInstructions from "../components/InstallInstructions.astro";
+---
+
+<BaseLayout title="YT Experience — a nicer YouTube">
+  <main class="page">
+    <header class="hero">
+      <h1>YT Experience</h1>
+      <p>
+        A browser extension for Chromium-based browsers (Brave, Chrome) that lets you
+        toggle YouTube customizations on and off — starting with removing Shorts.
+      </p>
+      <a class="cta" href="https://github.com/glhrmbg/yt-experience" target="_blank" rel="noreferrer">
+        View on GitHub
+      </a>
+    </header>
+
+    <section>
+      <h2>Features</h2>
+      <FeatureList />
+    </section>
+
+    <section>
+      <h2>Install</h2>
+      <InstallInstructions />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+  }
+
+  .hero h1 {
+    font-size: 2.25rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+
+  .cta {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 8px;
+    background: var(--fg);
+    color: var(--bg);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  section {
+    margin-top: 3rem;
+  }
+
+  section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+</style>
