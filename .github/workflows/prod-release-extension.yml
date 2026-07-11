@@ -45,9 +45,23 @@ jobs:
         run: |
           VERSION=$(node -p "require('./extension/package.json').version")
           TAG="extension-build-${{ github.run_number }}"
-          NOTES="Automated build from commit $(git rev-parse --short HEAD)."
-          NOTES="$NOTES"$'\n\n'"Install: download the zip below, unzip it, then in Brave/Chrome go to brave://extensions (or chrome://extensions), enable Developer mode, and click Load unpacked on the unzipped folder."
+          SHA_SHORT=$(git rev-parse --short HEAD)
+          ZIP_NAME="YTXP-v${VERSION}.zip"
+          mv yt-experience-extension.zip "$ZIP_NAME"
+
+          printf '%s\n' \
+            "Build automático da extensão **YT Experience (YTXP)**, a partir do commit \`$SHA_SHORT\`." \
+            "" \
+            "> Baixe o arquivo \`$ZIP_NAME\` abaixo. Ignore o \"Source code (zip)\"/\"(tar.gz)\" que o GitHub adiciona automaticamente - eles contêm o repositório inteiro (extensão + site), não a extensão pronta pra instalar." \
+            "" \
+            "### Como instalar" \
+            "1. Baixe \`$ZIP_NAME\` e descompacte em uma pasta." \
+            "2. Abra \`brave://extensions\` (ou \`chrome://extensions\`) no navegador." \
+            "3. Ative o **Modo do desenvolvedor** (canto superior direito)." \
+            "4. Clique em **Carregar sem compactação** e selecione a pasta descompactada." \
+            > release-notes.md
+
           gh release create "$TAG" \
-            yt-experience-extension.zip \
-            --title "Extension build #${{ github.run_number }} (v$VERSION)" \
-            --notes "$NOTES"
+            "$ZIP_NAME" \
+            --title "YT Experience (YTXP) v$VERSION · build #${{ github.run_number }}" \
+            --notes-file release-notes.md
