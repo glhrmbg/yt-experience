@@ -1,0 +1,55 @@
+name: "[DEV] Validate & open PR to main"
+
+# Fires after a feature PR lands on develop (push to develop). Re-validates
+# the merged state and auto-opens (or leaves alone, if one is already open)
+# the release PR to main. dev-validate.yml is the separate required check
+# that actually gates that PR's merge.
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck -w extension
+
+      - name: Build
+        run: npm run build -w extension
+
+  open-pr:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Open or update PR to main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          COUNT=$(gh pr list --base main --head develop --json number --jq 'length')
+          if [ "$COUNT" -eq 0 ]; then
+            gh pr create --base main --head develop \
+              --title "Release: develop -> main" \
+              --body "Auto-opened by the [DEV] workflow after \`develop\` passed validation."
+          else
+            echo "A PR from develop to main is already open - nothing to do, new commits show up on it automatically."
+          fi

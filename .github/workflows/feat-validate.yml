@@ -1,13 +1,12 @@
-name: CI extension
+name: "[FEAT] Validate"
 
+# Required status check gating merges into develop. Deliberately unfiltered by
+# source branch name/path (unlike the push-triggered workflow below) so it
+# always runs for any PR targeting develop, regardless of what the source
+# branch is called - branch protection requires this "build" check to exist.
 on:
-  push:
-    branches: [main, develop]
-    paths:
-      - "extension/**"
-      - ".github/workflows/ci-extension.yml"
   pull_request:
-    branches: [main, develop]
+    branches: [develop]
 
 jobs:
   build:

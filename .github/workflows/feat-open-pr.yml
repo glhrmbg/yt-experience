@@ -1,0 +1,58 @@
+name: "[FEAT] Validate & open PR to develop"
+
+# Fast feedback on every feature push, then auto-opens (or leaves alone, if
+# one is already open - new commits show up on it automatically) the PR to
+# develop. This does NOT replace feat-validate.yml: that one is the required
+# check gating the actual merge, this one is just the automation/visibility
+# layer described by the gitflow.
+on:
+  push:
+    branches:
+      - "feature/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck -w extension
+
+      - name: Build
+        run: npm run build -w extension
+
+  open-pr:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Open or update PR to develop
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          COUNT=$(gh pr list --base develop --head "$BRANCH" --json number --jq 'length')
+          if [ "$COUNT" -eq 0 ]; then
+            gh pr create --base develop --head "$BRANCH" \
+              --title "$BRANCH" \
+              --body "Auto-opened by the [FEAT] workflow after \`$BRANCH\` passed validation."
+          else
+            echo "A PR from $BRANCH to develop is already open - nothing to do, new commits show up on it automatically."
+          fi
