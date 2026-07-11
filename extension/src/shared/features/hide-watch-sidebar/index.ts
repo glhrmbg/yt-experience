@@ -6,9 +6,10 @@ import { createCssToggle } from "../cssToggle";
 // (ytd-watch-next-secondary-results-renderer > #related). Hiding the column
 // wrapper removes both in one shot instead of targeting each separately.
 //
-// #primary's own margin (0 0 0 16px) is what actually centers it once
-// #secondary is gone - confirmed by measuring the real layout. Pinning it
-// explicitly guards against YouTube changing that default out from under us.
+// #primary's own margin (0 0 0 16px) and padding (12px 16px 0px 0px) are
+// what actually center it once #secondary is gone - confirmed by measuring
+// the real layout. Pinning both explicitly guards against YouTube changing
+// either default out from under us.
 const CSS = `
 ytd-watch-flexy #secondary {
   display: none !important;
@@ -16,6 +17,7 @@ ytd-watch-flexy #secondary {
 
 ytd-watch-flexy #primary {
   margin: 0px 0px 0px 16px !important;
+  padding: 12px 16px 0px 0px !important;
 }
 `;
 
