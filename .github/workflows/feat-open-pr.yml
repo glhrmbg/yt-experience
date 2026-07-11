@@ -46,7 +46,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -55,8 +55,11 @@ jobs:
       - name: Typecheck
         run: npm run typecheck -w extension
 
-      - name: Build
+      - name: Build extension
         run: npm run build -w extension
+
+      - name: Build site
+        run: npm run build -w site
 
   open-pr:
     needs: build
