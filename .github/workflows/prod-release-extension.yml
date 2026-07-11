@@ -56,15 +56,15 @@ jobs:
           mv yt-experience-extension.zip "$ZIP_NAME"
 
           printf '%s\n' \
-            "Build automático da extensão **YT Experience (YTXP)**, a partir do commit \`$SHA_SHORT\`." \
+            "Automated build of the **YT Experience (YTXP)** extension, from commit \`$SHA_SHORT\`." \
             "" \
-            "> Baixe o arquivo \`$ZIP_NAME\` abaixo. Ignore o \"Source code (zip)\"/\"(tar.gz)\" que o GitHub adiciona automaticamente - eles contêm o repositório inteiro (extensão + site), não a extensão pronta pra instalar." \
+            "> Download the \`$ZIP_NAME\` file below. Ignore the \"Source code (zip)\"/\"(tar.gz)\" that GitHub adds automatically - those contain the whole repository (extension + site), not the ready-to-install extension." \
             "" \
-            "### Como instalar" \
-            "1. Baixe \`$ZIP_NAME\` e descompacte em uma pasta." \
-            "2. Abra \`brave://extensions\` (ou \`chrome://extensions\`) no navegador." \
-            "3. Ative o **Modo do desenvolvedor** (canto superior direito)." \
-            "4. Clique em **Carregar sem compactação** e selecione a pasta descompactada." \
+            "### How to install" \
+            "1. Download \`$ZIP_NAME\` and unzip it into a folder." \
+            "2. Open \`brave://extensions\` (or \`chrome://extensions\`) in your browser." \
+            "3. Enable **Developer mode** (top right corner)." \
+            "4. Click **Load unpacked** and select the unzipped folder." \
             > release-notes.md
 
           gh release create "$TAG" \
