@@ -1,4 +1,4 @@
-name: "[PROD] Deploy site"
+name: "[PROD] Deploy YT Experience (YTXP) site"
 
 on:
   push:
