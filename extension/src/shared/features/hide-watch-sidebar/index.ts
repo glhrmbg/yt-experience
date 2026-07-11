@@ -7,16 +7,18 @@ import { createCssToggle } from "../cssToggle";
 // #secondary-inner. Chat has no independent existence outside that column,
 // so hiding #secondary wholesale (the old approach) took it down too.
 //
-// :has() lets the two cases stay pure CSS instead of needing JS to move
-// chat around (which was fragile - relocating an <iframe> forces it to
-// reload): no chat in the column -> hide the whole thing like before; chat
-// present -> keep the column, but hide everything in it except the chat.
+// #chat-container turns out to exist in the DOM even on regular videos
+// (empty), so branching on ":has(#chat-container)" left an empty column
+// there instead of hiding it. Branch on ".ytp-live" instead - the class
+// YouTube's own player adds only for actual live broadcasts - so: no live
+// player -> hide the whole column like before; live -> keep the column,
+// but hide everything in it except the chat.
 const CSS = `
-ytd-watch-flexy #secondary:not(:has(#chat-container)) {
+ytd-watch-flexy:not(:has(.ytp-live)) #secondary {
   display: none !important;
 }
 
-ytd-watch-flexy #secondary:has(#chat-container) #secondary-inner > *:not(#chat-container) {
+ytd-watch-flexy:has(.ytp-live) #secondary-inner > *:not(#chat-container) {
   display: none !important;
 }
 `;
