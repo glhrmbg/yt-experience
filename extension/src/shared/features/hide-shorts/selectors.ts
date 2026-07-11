@@ -41,9 +41,11 @@ ytd-rich-shelf-renderer[is-shorts] {
   display: none !important;
 }
 
-/* Channel page "Shorts" tab (href-based; unverified against live DOM, best effort). */
+/* Channel page "Shorts" tab. Verified against live DOM: yt-tab-shape has no
+   href at all, only tab-title (localized text, same caveat as the expanded
+   guide entry above - no language-independent attribute available here). */
 tp-yt-paper-tab:has(a[href*="/shorts"]),
-yt-tab-shape:has(a[href*="/shorts"]) {
+yt-tab-shape[tab-title="Shorts"] {
   display: none !important;
 }
 
