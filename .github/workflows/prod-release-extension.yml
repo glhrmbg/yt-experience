@@ -4,6 +4,13 @@ name: "[PROD] Release extension"
 # Release with a downloadable zip, every time a change to extension/** lands
 # on main. No store account/credentials involved - users download the zip,
 # unzip it, and load it unpacked (Developer mode -> Load unpacked).
+#
+# Versioning: auto-increments PATCH from the latest v*.*.* tag (v0.1.0 ->
+# v0.1.1 -> ...), no manual bump needed. If nobody has bumped
+# extension/package.json's version between releases, that's fine - this is
+# the only source of truth for release versions. To cut a MINOR or MAJOR
+# release on purpose, bump extension/package.json's version yourself in a
+# PR; the next auto-release will pick up from that new baseline instead.
 on:
   push:
     branches: [main]
@@ -21,6 +28,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -30,6 +39,22 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Compute next version
+        id: version
+        run: |
+          LATEST_TAG=$(git tag -l 'v*.*.*' | sort -V | tail -n1)
+          if [ -z "$LATEST_TAG" ]; then
+            VERSION=$(node -p "require('./extension/package.json').version")
+          else
+            BASE="${LATEST_TAG#v}"
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$BASE"
+            VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Set extension version
+        run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version -w extension
 
       - name: Build extension
         run: npm run build -w extension
@@ -43,8 +68,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          VERSION=$(node -p "require('./extension/package.json').version")
-          TAG="extension-build-${{ github.run_number }}"
+          VERSION="${{ steps.version.outputs.version }}"
+          TAG="v$VERSION"
           SHA_SHORT=$(git rev-parse --short HEAD)
           ZIP_NAME="YTXP-v${VERSION}.zip"
           mv yt-experience-extension.zip "$ZIP_NAME"
@@ -63,5 +88,5 @@ jobs:
 
           gh release create "$TAG" \
             "$ZIP_NAME" \
-            --title "YT Experience (YTXP) v$VERSION · build #${{ github.run_number }}" \
+            --title "YT Experience (YTXP) v$VERSION" \
             --notes-file release-notes.md
