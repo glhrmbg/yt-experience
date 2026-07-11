@@ -3,8 +3,7 @@ export type FeatureId =
   | "hide-shorts-feed"
   | "hide-shorts-channel"
   | "hide-shorts-chip"
-  | "hide-watch-sidebar"
-  | "hide-watch-live-chat";
+  | "hide-watch-sidebar";
 
 export interface Feature {
   id: FeatureId;
