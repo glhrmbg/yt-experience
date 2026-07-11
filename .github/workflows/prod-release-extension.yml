@@ -54,7 +54,7 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Set extension version
-        run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version -w extension
+        run: npm pkg set version="${{ steps.version.outputs.version }}" -w extension
 
       - name: Build extension
         run: npm run build -w extension
