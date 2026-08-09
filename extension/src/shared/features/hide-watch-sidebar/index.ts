@@ -32,6 +32,14 @@ ytd-watch-flexy:has(.ytp-live) #secondary:has(ytd-live-chat-frame[hide-chat-fram
 ytd-watch-flexy:has(.ytp-live) #secondary-inner > *:not(#chat-container) {
   display: none !important;
 }
+
+/* Below a certain window width, YouTube reparents #related out of
+   #secondary and into #below (under #primary, alongside the comments)
+   instead of just reflowing it there with CSS - so the #secondary rules
+   above don't reach this copy. #related's id stays unique either way. */
+ytd-watch-flexy #below #related {
+  display: none !important;
+}
 `;
 
 const toggle = createCssToggle("ytx-hide-watch-sidebar", CSS);
