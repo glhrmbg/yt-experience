@@ -24,10 +24,10 @@ export default defineManifest({
     type: "module",
   },
   permissions: ["storage"],
-  host_permissions: ["*://*.youtube.com/*"],
+  host_permissions: ["*://*.youtube.com/*", "*://*.google.com/search*"],
   content_scripts: [
     {
-      matches: ["*://*.youtube.com/*"],
+      matches: ["*://*.youtube.com/*", "*://*.google.com/search*"],
       js: ["src/content/main.ts"],
       run_at: "document_start",
     },

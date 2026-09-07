@@ -3,7 +3,8 @@ export type FeatureId =
   | "hide-shorts-feed"
   | "hide-shorts-channel"
   | "hide-shorts-chip"
-  | "hide-watch-sidebar";
+  | "hide-watch-sidebar"
+  | "center-google-search";
 
 export interface Feature {
   id: FeatureId;
