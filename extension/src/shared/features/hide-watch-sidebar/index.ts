@@ -40,6 +40,28 @@ ytd-watch-flexy:has(.ytp-live) #secondary-inner > *:not(#chat-container) {
 ytd-watch-flexy #below #related {
   display: none !important;
 }
+
+/* Ambient mode (dark theme only) blows its glow canvases up with an inline
+   transform: scale(1.5, 2), centred on the player, so the glow spreads
+   sideways. Transforms don't affect layout but do count toward scrollable
+   overflow. Measured with #secondary hidden: player 1326px at L=191/R=1517
+   in a 1708px viewport, so the glow wants 331px of spread per side but only
+   has 191px of room - the extra 140px on the right is what raises the
+   horizontal scrollbar (the left 140px just falls off-screen harmlessly).
+   The area looks unselectable because those canvases are pointer-events:
+   none.
+
+   Clipping at ytd-watch-flexy, which is exactly viewport-wide (L=0 R=1708),
+   drops that off-screen remainder from the scroll area while leaving every
+   visible pixel of glow intact: it still radiates from the player and fills
+   all 191px on both sides, just stops at the window border. Scaling the
+   glow down instead would shrink the effect itself, and clipping lower down
+   (#cinematics-container is player-sized) would box it into the video.
+   "clip" rather than "hidden" because it doesn't create a scroll container,
+   so sticky descendants keep working, and it leaves overflow-y alone. */
+ytd-watch-flexy {
+  overflow-x: clip !important;
+}
 `;
 
 const toggle = createCssToggle("ytx-hide-watch-sidebar", CSS);
